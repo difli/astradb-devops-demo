@@ -66,5 +66,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
           
-      - name: Get Kubernetes config
+      - name: Get kubernetes config
         run: aws eks update-kubeconfig --region eu-central-1 --name test-cluster
+        
+      - name: Deploy to eks
+        run: kubectl apply -f ./deployment.yml
