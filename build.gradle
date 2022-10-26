@@ -1,0 +1,55 @@
+buildscript {
+    ext {
+        springBootVersion = '2.5.3'
+     }
+
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url "https://repo.spring.io/plugins-release" }
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+plugins {
+  id 'org.springframework.boot' version '2.5.3'
+  id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+  id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+bootBuildImage {
+	imageName = "dieterfl/spring-music"
+}
+
+dependencies {
+    // Spring Boot
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework.boot:spring-boot-starter-data-cassandra"
+    implementation "com.datastax.astra:astra-spring-boot-starter:0.2.6"
+    implementation "io.micrometer:micrometer-registry-prometheus"
+
+    // Webjars
+    implementation "org.webjars:bootstrap:3.1.1"
+    implementation "org.webjars:angularjs:1.2.16"
+    implementation "org.webjars:angular-ui:0.4.0-2"
+    implementation "org.webjars:angular-ui-bootstrap:0.10.0-1"
+    implementation "org.webjars:jquery:2.1.0-2"
+
+    // Testing
+    testImplementation "junit:junit"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+}
+
+jar {
+    archiveBaseName = "spring-music"
+}
+bootRun.systemProperties = System.properties
+sourceCompatibility = 11

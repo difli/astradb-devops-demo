@@ -1,0 +1,15 @@
+name: Create Astra Environment
+run-name: ${{ github.actor }} is creating a Astra demo env
+on: [push]
+
+jobs:
+  build:
+    name: Create astra db
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - run: ls -lsa
+      - run: /bin/bash "./astra-install.sh"
+      - run: ls -lsa
+      - run: /home/runner/.astra/cli/astra db list --token 'AstraCS:ASiSkBRIKnCtOyxvXfQEuWHN:ac9ac7da506be5bcc8ddfdfdb2e19eb4aa68f3b217dbc693f78f7ece805f899d'

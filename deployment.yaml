@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: spring-music
+  name: spring-music
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-music
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: spring-music
+    spec:
+      containers:
+      - image: dieterfl/spring-music
+        name: spring-music
+        resources: {}
+status: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: spring-music
+  name: spring-music
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: spring-music
+  type: ClusterIP
+status:
+  loadBalancer: {}

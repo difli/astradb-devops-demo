@@ -1,0 +1,25 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+spring:
+  data:
+    cassandra:
+      schema-action: CREATE_IF_NOT_EXISTS
+      
+astra:
+  application-token: ${astra_application_token:AstraCS:ztuoGZRsJnLekMXmOQuoAwFH:86785f942f4c964f2b7ced16f616571ecaaefa6f90636519ced7bc521ec8dd64}
+  database-id: ${astra_database_id:dad17b32-f329-424b-b559-31be96f85951}
+  database-region: ${astra_database_region:europe-west1}
+  keyspace: ${astra_keyspace:demo}
+#  application-token: AstraCS:AaaGkKrdIXYCGeCwxdAlmdwb:6fe33973c7ba5bf0cb335d2706ce5b7c46fb8ba2e117f27b5eb297cb7048eb68
+#  database-id: 3f12a5a6-3b94-4ff6-ae8f-f66b4b5f0bc6
+#  database-region: europe-west1
+#  keyspace: demo
+  metrics:
+    enabled: true
