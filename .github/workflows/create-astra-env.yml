@@ -20,7 +20,7 @@ jobs:
       - run: ls -lsa /home/runner/.astra/cli
 #      - run: astra db list --token $ASTRA_DB_APPLICATION_TOKEN
       - run: astra db create $ASTRA_DB_NAME -k $ASTRA_DB_KEYSPACE -r $ASTRA_DB_REGION --if-not-exist --wait --token $ASTRA_DB_APPLICATION_TOKEN
-      - run: astra db get demo --key id
+      - run: astra db get demo --key id --token $ASTRA_DB_APPLICATION_TOKEN
  
       - name: Set up JDK
         uses: actions/setup-java@v1
