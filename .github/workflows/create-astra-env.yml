@@ -40,7 +40,7 @@ jobs:
         run: docker images
 
       - name: Tag image
-        run: docker tag spring-music:latest dieterfl/astradb-devops-demo:latest
+        run: docker tag dieterfl/spring-music:latest dieterfl/astradb-devops-demo:latest
 
       - name: Publish image
         run: docker push dieterfl/astradb-devops-demo:latest
