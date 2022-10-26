@@ -13,6 +13,6 @@ jobs:
       - run: /bin/bash "./astra-install.sh"
       - run: ls -lsa
       - run: /bin/bash
-      - run: astra db list --token 'AstraCS:ASiSkBRIKnCtOyxvXfQEuWHN:ac9ac7da506be5bcc8ddfdfdb2e19eb4aa68f3b217dbc693f78f7ece805f899d'
-#      - run: /home/runner/.astra/cli/astra astra db create demo -k demo --if-not-exist --wait --token 'AstraCS:ASiSkBRIKnCtOyxvXfQEuWHN:ac9ac7da506be5bcc8ddfdfdb2e19eb4aa68f3b217dbc693f78f7ece805f899d'
+#      - run: astra db list --token 'AstraCS:ASiSkBRIKnCtOyxvXfQEuWHN:ac9ac7da506be5bcc8ddfdfdb2e19eb4aa68f3b217dbc693f78f7ece805f899d'
+      - run: /home/runner/.astra/cli/astra astra db create demo -k demo --if-not-exist --wait --token 'AstraCS:ASiSkBRIKnCtOyxvXfQEuWHN:ac9ac7da506be5bcc8ddfdfdb2e19eb4aa68f3b217dbc693f78f7ece805f899d'
 
