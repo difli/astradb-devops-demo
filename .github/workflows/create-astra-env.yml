@@ -11,6 +11,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: ls -lsa
       - run: /bin/bash "./astra-install.sh"
+      - run: echo "/home/runner/.astra/cli" >> $GITHUB_PATH
       - run: export PATH=$PATH:/home/runner/.astra/cli
       - run: ls -lsa /home/runner/.astra/cli
       - run: echo "$PATH"
