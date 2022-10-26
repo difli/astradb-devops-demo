@@ -40,8 +40,10 @@ jobs:
         id: vars
         run: echo ::set-output name=tag::$(echo ${GITHUB_REF:10})
 
-      - name: Tag image
+      - name: List image
         run: docker images
+
+      - name: Tag image
         run: docker tag spring-music:0.0.1-SNAPSHOT dieterfl/astradb-devops-demo:${{steps.vars.outputs.tag}}
 
       - name: Publish image
