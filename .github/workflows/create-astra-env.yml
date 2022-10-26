@@ -6,7 +6,7 @@ jobs:
   build:
     name: Create astra db
     env:
-      ASTRA_DB_APPLICATION_TOKEN: ${{ secrets.ASTRA_DB_APPLICATION_TOKEN }
+      ASTRA_DB_APPLICATION_TOKEN: ${{ secrets.ASTRA_DB_APPLICATION_TOKEN }}
     runs-on: ubuntu-latest
 
     steps:
