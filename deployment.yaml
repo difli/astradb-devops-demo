@@ -3,23 +3,23 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: astradb-devops
-  name: astradb-devops
+    app: astradb-devops-demo
+  name: astradb-devops-demo
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: astradb-devops
+      app: astradb-devops-demo
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: astradb-devops
+        app: astradb-devops-demo
     spec:
       containers:
-      - image: dieterfl/astradb-devops
-        name: astradb-devops
+      - image: dieterfl/astradb-devops-demo
+        name: astradb-devops-demo
         resources: {}
 status: {}
 
@@ -29,15 +29,15 @@ kind: Service
 metadata:
   creationTimestamp: null
   labels:
-    app: astradb-devops
-  name: astradb-devops
+    app: astradb-devops-demo
+  name: astradb-devops-demo
 spec:
   ports:
   - port: 8080
     protocol: TCP
     targetPort: 8080
   selector:
-    app: astradb-devops
+    app: astradb-devops-demo
   type: ClusterIP
 status:
   loadBalancer: {}
