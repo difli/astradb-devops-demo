@@ -3,23 +3,23 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: spring-music
-  name: spring-music
+    app: astradb-devops
+  name: astradb-devops
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: spring-music
+      app: astradb-devops
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: spring-music
+        app: astradb-devops
     spec:
       containers:
-      - image: dieterfl/spring-music
-        name: spring-music
+      - image: dieterfl/astradb-devops
+        name: astradb-devops
         resources: {}
 status: {}
 
@@ -29,15 +29,15 @@ kind: Service
 metadata:
   creationTimestamp: null
   labels:
-    app: spring-music
-  name: spring-music
+    app: astradb-devops
+  name: astradb-devops
 spec:
   ports:
   - port: 8080
     protocol: TCP
     targetPort: 8080
   selector:
-    app: spring-music
+    app: astradb-devops
   type: ClusterIP
 status:
   loadBalancer: {}
