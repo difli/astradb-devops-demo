@@ -7,6 +7,9 @@ jobs:
     name: Create astra db
     env:
       ASTRA_DB_APPLICATION_TOKEN: ${{ secrets.ASTRA_DB_APPLICATION_TOKEN }}
+      ASTRA_DB_REGION: ${{ secrets.ASTRA_DB_REGION }}
+      ASTRA_DB_NAME: ${{ secrets.ASTRA_DB_NAME }}
+      ASTRA_DB_KEYSPACE: ${{ secrets.ASTRA_DB_KEYSPACE }}
     runs-on: ubuntu-latest
 
     steps:
@@ -16,5 +19,13 @@ jobs:
       - run: echo "/home/runner/.astra/cli" >> $GITHUB_PATH
       - run: ls -lsa /home/runner/.astra/cli
 #      - run: astra db list --token $ASTRA_DB_APPLICATION_TOKEN
-      - run: astra db create demo -k demo -r europe-west1 --if-not-exist --wait --token $ASTRA_DB_APPLICATION_TOKEN
+      - run: astra db create $ASTRA_DB_NAME -k $ASTRA_DB_KEYSPACE -r $ASTRA_DB_REGION --if-not-exist --wait --token $ASTRA_DB_APPLICATION_TOKEN
+      - run: astra db get demo --key id
+ 
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
 
+      - name: Build with Gradle
+        run: ./gradlew build
