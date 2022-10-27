@@ -3,44 +3,23 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: astradb-devops
-  name: astradb-devops
+    app: astradb-devops-demo
+  name: astradb-devops-demo
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: astradb-devops
+      app: astradb-devops-demo
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: astradb-devops
+        app: astradb-devops-demo
     spec:
       containers:
       - image: dieterfl/astradb-devops
         name: astradb-devops
-        env:
-          - name: astra_application_token
-            valueFrom:
-              secretKeyRef:
-                name: astrasecrets
-                key: astra_application_token
-          - name: astra_database_id
-            valueFrom:
-              secretKeyRef:
-                name: astrasecrets
-                key: astra_database_id
-          - name: astra_database_region
-            valueFrom:
-              secretKeyRef:
-                name: astrasecrets
-                key: astra_database_region
-          - name: astra_keyspace
-            valueFrom:
-              secretKeyRef:
-                name: astrasecrets
-                key: astra_keyspace
         resources: {}
 status: {}
 
@@ -50,15 +29,15 @@ kind: Service
 metadata:
   creationTimestamp: null
   labels:
-    app: astradb-devops
-  name: astradb-devops
+    app: astradb-devops-demo
+  name: astradb-devops-demo
 spec:
   ports:
   - port: 8080
     protocol: TCP
     targetPort: 8080
   selector:
-    app: astradb-devops
+    app: astradb-devops-demo
   type: ClusterIP
 status:
   loadBalancer: {}
