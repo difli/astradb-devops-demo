@@ -20,7 +20,6 @@ jobs:
       ASTRA_DB_REGION: ${{ secrets.ASTRA_DB_REGION }}
       ASTRA_DB_NAME: ${{ secrets.ASTRA_DB_NAME }}
       ASTRA_DB_KEYSPACE: ${{ secrets.ASTRA_DB_KEYSPACE }}
-      ASTRA_DB_ID: -1
       
     runs-on: ubuntu-latest
 
@@ -71,7 +70,9 @@ jobs:
         run: aws eks update-kubeconfig --region eu-central-1 --name test-cluster
         
       - name: create secrets
-        run: kubectl create secret generic secrets --from-literal=application_token=${{ secrets.ASTRA_DB_APPLICATION_TOKEN }} --from-literal=database_id=$ASTRA_DB_ID --from-literal=keyspace=${{ secrets.ASTRA_DB_KEYSPACE }} --from-literal=database-region=${{ secrets.ASTRA_DB_NAME }}
+        env:
+          ASTRA_DB_ID: astra db get demo --key id --token $ASTRA_DB_APPLICATION_TOKEN
+        run: kubectl create secret generic astrasecrets --from-literal=astra_application_token=${{ secrets.ASTRA_DB_APPLICATION_TOKEN }} --from-literal=astra_database_id=$ASTRA_DB_ID --from-literal=astra_keyspace=${{ secrets.ASTRA_DB_KEYSPACE }} --from-literal=astra_database-region=${{ secrets.ASTRA_DB_NAME }}
         
       - name: Deploy to eks
         run: kubectl apply -f ./deployment.yaml
