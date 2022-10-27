@@ -18,8 +18,8 @@ spec:
         app: astradb-devops-demo
     spec:
       containers:
-      - image: dieterfl/astradb-devops
-        name: astradb-devops
+      - image: dieterfl/astradb-devops-demo
+        name: astradb-devops-demo
         env:
           - name: astra_application_token
             valueFrom:
