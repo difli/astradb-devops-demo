@@ -61,7 +61,7 @@ jobs:
       - name: create secrets
         run: |
           echo "ASTRA_DB_ID=$(astra db get demo --key id --token $ASTRA_DB_APPLICATION_TOKEN)" >> $GITHUB_ENV  
-          kubectl create secret generic astrasecrets --from-literal=astra_application_token='${{ secrets.ASTRA_DB_APPLICATION_TOKEN }}' --from-literal=astra_database_id='$ASTRA_DB_ID' --from-literal=astra_keyspace='${{ secrets.ASTRA_DB_KEYSPACE }}' --from-literal=astra_database_region='${{ secrets.ASTRA_DB_REGION }}'
+          kubectl create secret generic astrasecrets --from-literal=astra_application_token='${{ secrets.ASTRA_DB_APPLICATION_TOKEN }}' --from-literal=astra_database_id='${ASTRA_DB_ID}' --from-literal=astra_keyspace='${{ secrets.ASTRA_DB_KEYSPACE }}' --from-literal=astra_database_region='${{ secrets.ASTRA_DB_REGION }}'
         
       - name: Deploy to eks
         run: kubectl apply -f ./deployment.yaml
