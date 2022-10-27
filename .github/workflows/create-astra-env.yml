@@ -66,5 +66,9 @@ jobs:
       - name: Deploy to eks
         run: kubectl apply -f ./deployment.yaml
 
-      - name: Curl astra rest api
-        run: curl --request POST --url "https://${ASTRA_DB_ID}-${ASTRA_DB_REGION}.apps.astra.datastax.com/api/rest/v2/keyspaces/${ASTRA_DB_KEYSPACE}/album" --header 'content-type: application/json' --header "x-cassandra-token: ${ASTRA_DB_APPLICATION_TOKEN}" --data '{"artist": "datastax","genre": "astra","albumid": null,"id": "aa1158cd-1cdd-46c0-8624-63023162c4c3","releaseyear": "2022","title": "stargate","trackcount": 0 }'      
+      - name: Github Action for curl
+      # You may pin to the exact commit or the version.
+      # uses: wei/curl@61d92b5169ea0425820dd13cf6fbad66b483e9f1
+        uses: wei/curl@v1.1.1    
+        with:
+          args: --request POST --url "https://${ASTRA_DB_ID}-${ASTRA_DB_REGION}.apps.astra.datastax.com/api/rest/v2/keyspaces/${ASTRA_DB_KEYSPACE}/album" --header 'content-type: application/json' --header "x-cassandra-token: ${ASTRA_DB_APPLICATION_TOKEN}" --data '{"artist": "datastax","genre": "astra","albumid": null,"id": "aa1158cd-1cdd-46c0-8624-63023162c4c3","releaseyear": "2022","title": "stargate","trackcount": 0 }'      
