@@ -66,7 +66,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           
       - name: Get kubernetes config
-        run: aws eks update-kubeconfig --region eu-central-1 --name test-cluster
+        run: aws eks update-kubeconfig --region eu-central-1 --name df-cluster
         
       - name: create secrets
         env:
