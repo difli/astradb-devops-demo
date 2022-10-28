@@ -59,7 +59,7 @@ jobs:
         run: aws eks update-kubeconfig --region eu-central-1 --name df-cluster
 
       - name: Get astra db id
-        echo "ASTRA_DB_ID=$(astra db get demo --key id --token $ASTRA_DB_APPLICATION_TOKEN)" >> $GITHUB_ENV
+        run: echo "ASTRA_DB_ID=$(astra db get demo --key id --token $ASTRA_DB_APPLICATION_TOKEN)" >> $GITHUB_ENV
         
       - name: Create secrets
         run: |
