@@ -2,6 +2,7 @@
 
 This is to demo the automation of [Astra DB](https://astra.datastax.com) by using the [Astra CLI](https://github.com/datastax/astra-cli). This demo leverages [GitHub Actions](https://docs.github.com/en/actions) - a continuous integration and continuous delivery (CI/CD) platform. The DevOps pipeline creates a Astra DB instance, creates the application container image, pushes the container image to DockerHub, deploys the application to EKS and leverages the Astra DB rest API.
 ![alt text](doc/pipeline.png)
+
 The demo application is based on [spring-music](https://github.com/cloudfoundry-samples/spring-music) and was adapted for Astra DB.
 
 ## Prerequisites
@@ -37,7 +38,7 @@ cd astradb-devops-demo
 git add . && git commit -m "XYZ" && git push
 ```
 - This triggers the DevOps pipeline. The pipeline definition is [here](.github/workflows/demo-pipeline.yml)
-- once the pipeline is finished, a new version of the application is online 
+- once the pipeline is finished, a new version of the application is online
 - Forward the port from your container to your local machine
 ```
 kubectl port-forward svc/astradb-devops-demo 8080:8080
