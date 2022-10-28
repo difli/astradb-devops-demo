@@ -1,13 +1,26 @@
-# spring-music-for-astradb
+# astradb-devops-demo
 
-This is an application to demo astra db. It is based on [spring-music](https://github.com/cloudfoundry-samples/spring-music). 
+This is to demo the automation of [Astra DB](https://astra.datastax.com) by using the [Astra CLI](https://github.com/datastax/astra-cli). This demo leverages [GitHub Actions](https://docs.github.com/en/actions) - a continuous integration and continuous delivery (CI/CD) platform. The demo application is based on [spring-music](https://github.com/cloudfoundry-samples/spring-music) and was adapted for Astra DB.
 
+## Prerequisites
+A Kubernetes cluster to run the application. A EKS cluster can be created on the command line like this. You need to have aws and eksctl commandline installed on your local machine.
+
+```
+eksctl create cluster \
+--name df-cluster \
+--version 1.23 \
+--region eu-central-1 \
+--nodegroup-name linux-nodes \
+--node-type t2.medium \
+--nodes 2
+```
 ## Quickstart
+- fork this repository
 - create a [free astra db account](https://astra.datastax.com)
-- create a astra db instance
 - select role 'Database Administrator' and generate an application token  
 - download the credentials  
-- copy the keyspace name, the database id and the cloud provider region. You need to provide keyspace name, the database id, cloud provider region and application token when you start the application to allow the application to connect to your astra db instance.
+- Add Actions Secrets under settings in your forked repo. 
+![alt text](doc/secrets.png)
 - clone this repo
 ```
 git clone https://github.com/difli/spring-music-for-astradb.git
