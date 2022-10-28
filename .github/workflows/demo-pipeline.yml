@@ -65,13 +65,13 @@ jobs:
       - name: Get Astra DB instance id
         run: echo "ASTRA_DB_ID=$(astra db get demo --key id --token $ASTRA_DB_APPLICATION_TOKEN)" >> $GITHUB_ENV
         
-      - name: Create secrets
+      - name: Create application secrets
         run: |
           echo "ASTRA_DB_ID=${{ env.ASTRA_DB_ID }}"
           kubectl delete secret generic astrasecrets --ignore-not-found
           kubectl create secret generic astrasecrets --from-literal=astra_application_token='${{ secrets.ASTRA_DB_APPLICATION_TOKEN }}' --from-literal=astra_database_id=${{ env.ASTRA_DB_ID }} --from-literal=astra_keyspace='${{ secrets.ASTRA_DB_KEYSPACE }}' --from-literal=astra_database_region='${{ secrets.ASTRA_DB_REGION }}'
         
-      - name: Deploy to EKS
+      - name: Deploy the application to EKS
         run: kubectl apply -f ./deployment.yaml
 
       - name: Add a row via Astra DB rest API
