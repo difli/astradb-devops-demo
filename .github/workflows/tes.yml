@@ -28,4 +28,7 @@ jobs:
           astra db get demo --key id --token $ASTRA_DB_APPLICATION_TOKEN
           echo "ASTRA_DB_ID=$(astra db get demo --key id --token $ASTRA_DB_APPLICATION_TOKEN)" >> $GITHUB_ENV
           echo "ASTRA_DB_ID=${{ env.ASTRA_DB_ID }}"
+          
+      - name: retrieve env variable
+        run: echo "ASTRA_DB_ID=${{ env.ASTRA_DB_ID }}"
         
