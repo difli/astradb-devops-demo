@@ -22,12 +22,12 @@ jobs:
       - run: astra db create $ASTRA_DB_NAME -k $ASTRA_DB_KEYSPACE -r $ASTRA_DB_REGION --if-not-exist --wait --token $ASTRA_DB_APPLICATION_TOKEN
       - run: astra db list --token $ASTRA_DB_APPLICATION_TOKEN
  
-      - name: Set up JDK
+      - name: Set up jdk
         uses: actions/setup-java@v1
         with:
           java-version: 11
 
-      - name: Build with Gradle
+      - name: Build with gradle
         run: ./gradlew bootBuildImage
         
       - name: Login to DockerHub
@@ -48,7 +48,7 @@ jobs:
       - name: Print image name
         run: echo dieterfl/astradb-devops-demo:latest
         
-      - name: Configure AWS credentials
+      - name: Configure aws credentials
         uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -57,17 +57,20 @@ jobs:
           
       - name: Get kubernetes config
         run: aws eks update-kubeconfig --region eu-central-1 --name df-cluster
+
+      - name: Get astra db id
+        echo "ASTRA_DB_ID=$(astra db get demo --key id --token $ASTRA_DB_APPLICATION_TOKEN)" >> $GITHUB_ENV
         
-      - name: create secrets
+      - name: Create secrets
         run: |
-          echo "ASTRA_DB_ID=$(astra db get demo --key id --token $ASTRA_DB_APPLICATION_TOKEN)" >> $GITHUB_ENV
           echo "ASTRA_DB_ID=${{ env.ASTRA_DB_ID }}"
+          kubectl delete secret generic astrasecrets --ignore-not-found
           kubectl create secret generic astrasecrets --from-literal=astra_application_token='${{ secrets.ASTRA_DB_APPLICATION_TOKEN }}' --from-literal=astra_database_id=${{ env.ASTRA_DB_ID }} --from-literal=astra_keyspace='${{ secrets.ASTRA_DB_KEYSPACE }}' --from-literal=astra_database_region='${{ secrets.ASTRA_DB_REGION }}'
         
       - name: Deploy to eks
         run: kubectl apply -f ./deployment.yaml
 
-#      - name: Github Action for curl
+#      - name: Curl rest api
       # You may pin to the exact commit or the version.
       # uses: wei/curl@61d92b5169ea0425820dd13cf6fbad66b483e9f1
 #        uses: wei/curl@v1.1.1    
