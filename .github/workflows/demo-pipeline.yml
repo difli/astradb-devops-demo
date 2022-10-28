@@ -1,10 +1,10 @@
-name: Create Astra Environment
-run-name: ${{ github.actor }} is creating a Astra demo env
+name: Astra DB DevOps Demo
+run-name: ${{ github.actor }} is creating a Astra DB DevOps demo
 on: [push]
 
 jobs:
   build:
-    name: Create astra db
+    name: Create Astra DB DevOps demo
     env:
       ASTRA_DB_APPLICATION_TOKEN: ${{ secrets.ASTRA_DB_APPLICATION_TOKEN }}
       ASTRA_DB_REGION: ${{ secrets.ASTRA_DB_REGION }}
@@ -14,15 +14,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - run: ls -lsa
-      - run: /bin/bash "./astra-install.sh"
-      - run: echo "/home/runner/.astra/cli" >> $GITHUB_PATH
-      - run: ls -lsa /home/runner/.astra/cli
-      - run: astra db create $ASTRA_DB_NAME -k $ASTRA_DB_KEYSPACE -r $ASTRA_DB_REGION --if-not-exist --wait --token $ASTRA_DB_APPLICATION_TOKEN
-      - run: astra db list --token $ASTRA_DB_APPLICATION_TOKEN
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: List directory 
+        run: ls -lsa
+      
+      - name: Install Astra CLI
+        run: /bin/bash "./astra-install.sh"
+      
+      - name: Set Astra CLI Path
+        run: echo "/home/runner/.astra/cli" >> $GITHUB_PATH
+      
+      - name: Create Astra DB instance with Astra CLI
+        run: astra db create $ASTRA_DB_NAME -k $ASTRA_DB_KEYSPACE -r $ASTRA_DB_REGION --if-not-exist --wait --token $ASTRA_DB_APPLICATION_TOKEN
+        
+      - name: List all your Astra DB instances with Astra CLI
+        run: astra db list --token $ASTRA_DB_APPLICATION_TOKEN
  
-      - name: Set up jdk
+      - name: Set up JDK
         uses: actions/setup-java@v1
         with:
           java-version: 11
@@ -36,29 +46,23 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: List image
-        run: docker images
-
       - name: Tag image
         run: docker tag dieterfl/spring-music:latest dieterfl/astradb-devops-demo:latest
 
       - name: Publish image
         run: docker push dieterfl/astradb-devops-demo:latest
 
-      - name: Print image name
-        run: echo dieterfl/astradb-devops-demo:latest
-        
-      - name: Configure aws credentials
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
           
-      - name: Get kubernetes config
-        run: aws eks update-kubeconfig --region eu-central-1 --name df-cluster
+      - name: Get EKS Kubeconfig 
+        run: aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name ${{ secrets.EKS_CLUSTER_NAME }}
 
-      - name: Get astra db id
+      - name: Get Astra DB instance id
         run: echo "ASTRA_DB_ID=$(astra db get demo --key id --token $ASTRA_DB_APPLICATION_TOKEN)" >> $GITHUB_ENV
         
       - name: Create secrets
@@ -67,8 +71,8 @@ jobs:
           kubectl delete secret generic astrasecrets --ignore-not-found
           kubectl create secret generic astrasecrets --from-literal=astra_application_token='${{ secrets.ASTRA_DB_APPLICATION_TOKEN }}' --from-literal=astra_database_id=${{ env.ASTRA_DB_ID }} --from-literal=astra_keyspace='${{ secrets.ASTRA_DB_KEYSPACE }}' --from-literal=astra_database_region='${{ secrets.ASTRA_DB_REGION }}'
         
-      - name: Deploy to eks
+      - name: Deploy to EKS
         run: kubectl apply -f ./deployment.yaml
 
-      - name: Add a row 
+      - name: Add a row via Astra DB rest API
         run: curl --request POST --url "https://${{ env.ASTRA_DB_ID }}-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/keyspaces/$ASTRA_DB_KEYSPACE/album" --header 'content-type:application/json' --header "x-cassandra-token:$ASTRA_DB_APPLICATION_TOKEN" --data '{"artist":"DataStax","genre":"NoSQL","albumid":null,"id":"aa1158cd-1cdd-46c0-8624-63023162c4c3","releaseyear":"2020","title":"Astra DB","trackcount":0 }'
