@@ -1,0 +1,31 @@
+name: Create Astra Environment
+run-name: ${{ github.actor }} is creating a Astra demo env
+on: [push]
+
+jobs:
+  build:
+    name: Create astra db
+    env:
+      ASTRA_DB_APPLICATION_TOKEN: ${{ secrets.ASTRA_DB_APPLICATION_TOKEN }}
+      ASTRA_DB_REGION: ${{ secrets.ASTRA_DB_REGION }}
+      ASTRA_DB_NAME: ${{ secrets.ASTRA_DB_NAME }}
+      ASTRA_DB_KEYSPACE: ${{ secrets.ASTRA_DB_KEYSPACE }}
+      
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - run: ls -lsa
+      - run: /bin/bash "./astra-install.sh"
+      - run: echo "/home/runner/.astra/cli" >> $GITHUB_PATH
+      - run: ls -lsa /home/runner/.astra/cli
+      - run: astra db create $ASTRA_DB_NAME -k $ASTRA_DB_KEYSPACE -r $ASTRA_DB_REGION --if-not-exist --wait --token $ASTRA_DB_APPLICATION_TOKEN
+      - run: astra db list --token $ASTRA_DB_APPLICATION_TOKEN
+ 
+        
+      - name: create secrets
+        run: |
+          echo "ASTRA_DB_ID=$(astra db get demo --key id --token $ASTRA_DB_APPLICATION_TOKEN)" >> $GITHUB_ENV
+          echo "ASTRA_DB_ID=${{ env.ASTRA_DB_ID }}"
+          kubectl create secret generic astrasecrets --from-literal=astra_application_token='${{ secrets.ASTRA_DB_APPLICATION_TOKEN }}' --from-literal=astra_database_id=${{ env.ASTRA_DB_ID }} --from-literal=astra_keyspace='${{ secrets.ASTRA_DB_KEYSPACE }}' --from-literal=astra_database_region='${{ secrets.ASTRA_DB_REGION }}'
+        
