@@ -19,6 +19,7 @@ spec:
     spec:
       containers:
       - image: dieterfl/astradb-devops-demo
+        imagePullPolicy: Always
         name: astradb-devops-demo
         env:
           - name: astra_application_token
